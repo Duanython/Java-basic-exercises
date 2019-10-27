@@ -114,19 +114,7 @@ public final class ExpTwo {
      * 定义接口 Shape 及其抽象方法 getArea()和 getPerimeter()用于计算图形和
      * 面积和周长。定义类 Rectangle(矩形)、类 Circle(圆形)、类 Triangle(三角形)，要
      * 求这些类继承点类 Coordinates()并实现接口的抽象方法。
-     * 提示：
-     * class Coordinates
-     * {
-     *  long x;
-     *  long y;
-     *  Coordinate(long x, long y)
-     * {
-     * this.x=x;
-     *   河北工业大学  Java 程序设计试验指导书
-     * 共 16 页，第 6 页
-     * this.y=y;
-     * }
-     * }
+     * 提示：...（省略了实验指定的源代码）
      */
     public static void expTwo_4_Verify(){
         Shape[] shapes = {
