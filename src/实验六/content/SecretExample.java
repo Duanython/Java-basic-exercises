@@ -1,6 +1,10 @@
 package 实验六.content;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
 /**
  * {@code SecretExample} 是实验给定的源代码中的类。
  * 用于学习文件IO的知识与简单加密过程。

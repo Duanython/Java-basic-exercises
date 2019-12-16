@@ -8,36 +8,37 @@ import java.util.Objects;
 import java.util.Scanner;
 
 /**
- * {@code ServerHandler} 为客户端发来的请求提供服务。
+ * {@code ServerHandler} 代表应用服务器，用
+ * 于处理客户端发来的验证码，并回送验证结果。
  * <p><ul>
- *     <li>在学习了{@link Socket} 、{@link java.net.ServerSocket}
- *     并复习了已有的I/O流类的API及用法后基本且完备的完成了题设任务。</li>
- *     <li>缺点：套接字输入输出流可进一步优化，例如可以使用
- *     {@link java.nio.channels.SocketChannel}提高与客户端的交互性</li>
- *     <li>缺点：{@code ServerHandler} 不具有通用性，仅可为特定任务服务，
- *     该程序仅作为初学者练习使用，可实用性较差。</li>
+ * <li>在学习了{@link Socket} 、{@link java.net.ServerSocket}
+ * 并复习了已有的I/O流类的API及用法后基本且完备的完成了题设任务。</li>
+ * <li>缺点：套接字输入输出流可进一步优化，例如可以使用
+ * {@link java.nio.channels.SocketChannel} 提高与客户端的交互性能</li>
+ * <li>缺点：Web服务器与应用服务器模型参考自《深入理解计算机系统》
+ * 的C语言Web服务器例题，并不熟悉当下较流行的Web服务器框架。</li>
+ * <li>缺点：该程序仅作为初学者练习使用，可实用性较差。</li>
  * </ul></p>
+ *
  * @author 段云飞
  * @since 2019-11-27
  */
 
-public class ServerHandler implements Runnable{
+public class ServerHandler implements Runnable {
     private Socket socket;
-    private String verficode;
+    private String verficode = "8192";
 
     /**
      * Construct a server-side processing task
-     * with the specified socket and ciphertext.
+     * with the specified socket.
+     *
      * @param socket the specified socket
-     * @param verficode the specified ciphertext
      * @throws NullPointerException if the params
-     * socket and verficode is null.
+     *                              socket and verficode is null.
      */
-    public ServerHandler(Socket socket, String verficode) {
+    public ServerHandler(Socket socket) {
         Objects.requireNonNull(socket);
-        Objects.requireNonNull(verficode);
         this.socket = socket;
-        this.verficode = verficode;
     }
 
     /**
@@ -51,13 +52,12 @@ public class ServerHandler implements Runnable{
     @Override
     public void run() {
         try (var in = new Scanner(socket.getInputStream(), StandardCharsets.UTF_8);
-             var out = new PrintWriter(socket.getOutputStream(), true, StandardCharsets.UTF_8))
-        {
+             var out = new PrintWriter(socket.getOutputStream(), true, StandardCharsets.UTF_8)) {
             out.println("Verifying Server!");
             int readcount = 0;
             boolean registsucc = false;
-            while (readcount < 3 && in.hasNextLine()){
-                if(in.nextLine().trim().equals(verficode)){
+            while (readcount < 3 && in.hasNextLine()) {
+                if (in.nextLine().trim().equals(this.verficode)) {
                     out.println("Registration Successful!");
                     registsucc = true;
                     break;
@@ -65,19 +65,16 @@ public class ServerHandler implements Runnable{
                 out.println("PassWord Wrong!");
                 readcount++;
             }
-            if(readcount >= 3)
+            if (readcount >= 3)
                 out.println("Illegal User!");
-            else if(registsucc)
+            else if (registsucc)
                 actionsAfterSuccessfulVerification();
-            socket.shutdownOutput();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void actionsAfterSuccessfulVerification(){
+    private void actionsAfterSuccessfulVerification() {
         //验证成功后的动作暂定为啥也不做
     }
 }

@@ -29,14 +29,18 @@ import java.util.stream.IntStream;
  *     消费者线程处理买票任务并完成找钱逻辑，输出买票信息，若购买失败则将
  *     该买票任务加入到{@code failqueue}。</li>
  * </ol></p>
+ *
  * @author 段云飞
  * @since 2019-10-24
  */
 public final class ExpFive {
     //Tool class does not need public constructor
-    private ExpFive() {}
+    private ExpFive() {
+    }
+
     /**
      * simulate JUnit's continuous execution of specified validation methods.
+     *
      * @param args useless param
      */
     public static void main(String[] args) {
@@ -53,8 +57,8 @@ public final class ExpFive {
         //The first time I use class Stream except System.in and System.out,
         //I can't find a way for for two threads to operate a stream at the same time.
         IntPredicate isOdd = i -> i % 2 == 1;
-        var odd = new FutureTask<>(()-> IntStream.rangeClosed(1, 100).filter(isOdd).count());
-        var even = new FutureTask<>(()-> IntStream.rangeClosed(1, 100).filter(isOdd.negate()).count());
+        var odd = new FutureTask<>(() -> IntStream.rangeClosed(1, 100).filter(isOdd).count());
+        var even = new FutureTask<>(() -> IntStream.rangeClosed(1, 100).filter(isOdd.negate()).count());
         new Thread(odd).start();
         new Thread(even).start();
         try {
@@ -101,20 +105,20 @@ public final class ExpFive {
                                     ticketcounts[i]
                             )
                     );
-                } catch (InterruptedException ignore) {
-                    System.err.println("任务生产失败");
-                    return;
+            } catch (InterruptedException ignore) {
+                System.err.println("任务生产失败");
+                return;
             }
             try {
                 BuyTicketsTask fail;
                 //若等待5秒仍没有买票任务则认为没有失败任务。
                 while ((fail = failqueue.poll(5, TimeUnit.SECONDS)) != null)
                     readyqueue.put(fail);
-            }catch (InterruptedException ignore){
-                if(failqueue.size() > 0)
+            } catch (InterruptedException ignore) {
+                if (failqueue.size() > 0)
                     System.err.println("任务处理失败。");
             }
-        },"生产、失败任务处理线程").start();
+        }, "生产、失败任务处理线程").start();
         new Thread(() -> {
             int ticketleft = Integer.MAX_VALUE;
             //cashier 是售票窗口的抽象。
@@ -122,25 +126,24 @@ public final class ExpFive {
             try {
                 BuyTicketsTask task;
                 //若等待5秒仍没有买票任务则认为已处理完所有任务。
-                while ((task = readyqueue.poll(5,TimeUnit.SECONDS)) != null){
-                    if(task.buying(cashier)){
+                while ((task = readyqueue.poll(5, TimeUnit.SECONDS)) != null) {
+                    if (task.buying(cashier)) {
                         ticketleft--;
                         System.out.printf("%s先生买票成功。\n",
                                 task.getCustomer().getName());
-                    }
-                    else{
+                    } else {
                         failqueue.put(task);
                         //这样好不公平。
                         System.out.printf("由于电影院找不开钱，%s先生去最后排队\n",
                                 task.getCustomer().getName());
                     }
                 }
-            }catch (InterruptedException ignore){
+            } catch (InterruptedException ignore) {
                 int len = readyqueue.size();
-                if(len > 0)
+                if (len > 0)
                     System.err.printf("%s被中断，有%d个任务处理未处理。\n",
                             Thread.currentThread().getName(), len);
             }
-        },"购票任务处理线程").start();
+        }, "购票任务处理线程").start();
     }
 }

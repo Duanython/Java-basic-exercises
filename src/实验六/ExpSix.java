@@ -1,6 +1,6 @@
 package 实验六;
 
-import 实验六.content.*;
+import 实验六.content.SecretExample;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -21,16 +21,19 @@ import java.util.Scanner;
  *     {@link java.nio.charset.Charset}、{@link StandardCharsets} 以及I/O家
  *     族的各个类的API和用法后，可轻松的解决题设问题。</li>
  * </ol></p>
+ *
  * @author 段云飞
  * @since 2019-11-20
  */
 
-public final class ExpSix{
+public final class ExpSix {
     //Tool class does not need public constructor
-    private ExpSix() {}
+    private ExpSix() {
+    }
 
     /**
      * simulate JUnit's continuous execution of specified validation methods.
+     *
      * @param args useless param
      */
     public static void main(String[] args) {
@@ -39,16 +42,16 @@ public final class ExpSix{
     }
 
     /**
-     *编写一个 Java 应用程序，将已存在的扩展名为.txt 的文本文件加密后存入
+     * 编写一个 Java 应用程序，将已存在的扩展名为.txt 的文本文件加密后存入
      * 另一个文本文件中。按模板要求，将【代码 1】~【代码 7】替换为 Java 程序代
      * 码。...（省略了实验指定的源代码）
      */
-    public static void expSix_1_Verify(){
+    public static void expSix_1_Verify() {
         SecretExample.main(null);
     }
 
     /**
-     *编程完成下列功能：
+     * 编程完成下列功能：
      * 1）首先建立两个文件 myfiel.txt 和 myfile2.txt。
      * 2）从标准设备中输入多名学生信息，如学号，姓名，专业，班级，家庭住
      * 址等，待输入"bye"时结束，将输入内容保存在 myfile1.txt 文件中。
@@ -63,12 +66,12 @@ public final class ExpSix{
             if (Files.notExists(pathtwo))
                 Files.createFile(pathtwo);
             System.out.println("Hello! Enter BYE to exit.");
-            try(var in = new Scanner(System.in, StandardCharsets.UTF_8);
-                var buffer = new BufferedWriter(
-                        new FileWriter(pathone.toFile(),StandardCharsets.UTF_8))){
-                while (in.hasNextLine()){
+            try (var in = new Scanner(System.in, StandardCharsets.UTF_8);
+                 var buffer = new BufferedWriter(
+                         new FileWriter(pathone.toFile(), StandardCharsets.UTF_8))) {
+                while (in.hasNextLine()) {
                     String line = in.nextLine();
-                    if(line.trim().equals("BYE"))
+                    if (line.trim().equals("BYE"))
                         break;
                     buffer.write(line + "\r\n");
                 }
