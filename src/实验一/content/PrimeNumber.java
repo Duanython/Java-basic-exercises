@@ -38,16 +38,20 @@ public final class PrimeNumber{
     public static List<Long> parallelCompute(long from, long to) throws ExecutionException {
         PrimeNumber.rangeCheck(from, to);
         //使用内部类 ComputePrime 的工厂方法派发任务。
+        List<Long> primeColls = new LinkedList<>();
+        if (from == 2) {
+            primeColls.add(from);
+            from++;
+        }
         var tasks = ComputePrime.newComputePrimeTasks(from, to);
         var executor = Executors.newCachedThreadPool();
-        List<Long> primeColls = new LinkedList<>();
         try {
             var results = executor.invokeAll(tasks);
             for (var result : results)
                 //每个线程都有属于自己的素数集，大大减少了同步开销。
                 primeColls.addAll(result.get());
 
-        } catch (InterruptedException | ExecutionException e){
+        } catch (InterruptedException | ExecutionException e) {
             throw new ExecutionException("concurrent running error", e);
         } finally {
             executor.shutdown();
