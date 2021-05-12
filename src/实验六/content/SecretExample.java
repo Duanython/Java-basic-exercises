@@ -11,8 +11,8 @@ import java.io.IOException;
  */
 public class SecretExample {
     public static void main(String[] args) {
-        File fileone = new File("hello.txt");
-        File filetwo = new File("hello.secret");
+        File fileone = new File("file/hello.txt");
+        File filetwo = new File("file/hello.secret");
         char b[] = new char[100];
         try {
             FileReader in = new FileReader(fileone); //【代码 1】创建指向 fileone 的字符输入流

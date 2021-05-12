@@ -59,8 +59,8 @@ public final class ExpSix {
      */
     public static void expSix_2_Verify() {
         try {
-            Path pathone = Path.of("myfile1.txt");
-            Path pathtwo = Path.of("myfile2.txt");
+            Path pathone = Path.of("file/myfile1.txt");
+            Path pathtwo = Path.of("file/myfile2.txt");
             if (Files.notExists(pathone))
                 Files.createFile(pathone);
             if (Files.notExists(pathtwo))

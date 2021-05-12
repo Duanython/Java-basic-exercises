@@ -56,9 +56,7 @@ public final class ExpEight {
     public static void main(String[] args) {
         //1）操作：建立数据库Studentinfo详情请参见"数据库.png"
         //2) 编写程序完成指定操作见该类的3个验证方法。
-        try (var conn = MySQL.getConnection("database.properties")) {
-            //expEight_a_Verify(conn);
-            //expEight_b_Verify(conn);
+        try (var conn = MySQL.getConnection("file/database.properties")) {
             expEight_c_Verify(conn);
         } catch (SQLException e) {
             for (var i : e)
@@ -87,7 +85,7 @@ public final class ExpEight {
             conn.setAutoCommit(false);
             //该try块用于处理所有与预备语句相关的问题。
             try (var insert = conn.prepareStatement("INSERT INTO student VALUES (?, ?, ?)")) {
-                Files.lines(Path.of("Student.txt"), StandardCharsets.UTF_8).forEach(
+                Files.lines(Path.of("file/Student.txt"), StandardCharsets.UTF_8).forEach(
                         str -> {
                             var split = str.split(" ");
                             try {
@@ -149,7 +147,7 @@ public final class ExpEight {
                 //表创建
                 stat.executeUpdate("CREATE TABLE stugrade(name CHAR(10),grade NUMERIC(4,1));");
                 //表数据插入
-                Files.lines(Path.of("Student.txt"), StandardCharsets.UTF_8).forEach(
+                Files.lines(Path.of("file/Student.txt"), StandardCharsets.UTF_8).forEach(
                         str -> {
                             var split = str.split(" ");
                             try {

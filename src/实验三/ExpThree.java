@@ -74,7 +74,7 @@ public final class ExpThree {
           很麻烦。改成文件输入流方便一丢丢。'Student.txt'在项目工作目录下。
          */
         var aver = new ArrayList<Average>();
-        try (var in = new Scanner(new File("Student.txt"))) {
+        try (var in = new Scanner(new File("file/Student.txt"))) {
             while (in.hasNextLine()){
                 var s = in.nextLine().split(" ");
                 aver.add(new StudentAverageWithoutMaxandMIn(s[0], Integer.parseInt(s[1]),
