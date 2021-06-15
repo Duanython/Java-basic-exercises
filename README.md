@@ -9,4 +9,18 @@
 * "实验四 图形用户界面程序设计"属于淘汰技术，并未包含在实验中
 * 实验八需要导入 com.mysql.jdbc.Driver.jar 驱动
 * 实验环境为Java SE 12.0.2 mysql 版本为8.0.18
-* 实验八创建数据库操作如图所示：![](thumb/database.png)  
+* 实验八创建数据库操作如下：
+
+```sql
+CREATE DATABASE Studentinfo; 
+
+USE Studentinfo;
+CREATE TABLE student
+(
+    Name CHAR(10),
+    Sex  CHAR(2),
+    Age  INTEGER
+);
+```
+
+![](thumb/database.png)  
